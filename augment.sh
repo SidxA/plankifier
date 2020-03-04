@@ -36,4 +36,4 @@
 #	python augment.py -totEpochs=10 -width=128 -height=128 -model=conv2 -aug=True -augtype='rescale' -augparameter=i -resize=keep_proportions -bs=8 -lr=0.0001 -opt=sgd -datapath='./data/'
 
 
-python augment.py -totEpochs=1 -width=128 -height=128 -model=conv2 -aug=True -augtype='shear' -augparameter=45 -resize=keep_proportions -bs=8 -lr=0.0001 -opt=sgd -datapath='./data/'
+python3 augment.py -totEpochs=50 -width=128 -height=128 -model=conv2 -aug=True -augtype='shear' -augparameter=45 -resize=keep_proportions -bs=8 -lr=0.0001 -opt=sgd -datapath='./data/'
