@@ -45,7 +45,7 @@ parser.add_argument('-override_lr', action='store_true', help='If true, when loa
 parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
 #Augmentation arguments
 parser.add_argument('-augtype', default='rotation', help='Augmentation type')
-parser.add_argument('-augparameter', type=tuple, default=(0,), help='Augmentation parameter')
+parser.add_argument('-augparameter', type=float, default=(0,), help='Augmentation parameter')
 
 args=parser.parse_args()
 
@@ -73,7 +73,8 @@ np.random.seed(12345)
 # Create a unique output directory
 now = datetime.datetime.now()
 dt_string = now.strftime("%Y-%m-%d_%Hh%Mm%Ss")
-outDir = args.outpath+'/'+args.model+'/'+dt_string+'/'
+filename = args.model+'_augmentation:'+args.augtype+'_on_'+np.str(args.augparameter)+'_'+dt_string
+outDir = args.outpath+'/'+filename+'/'
 pathlib.Path(outDir).mkdir(parents=True, exist_ok=True)
 fsummary=open(outDir+'args.txt','w')
 print(args, file=fsummary); fsummary.flush()
@@ -155,21 +156,21 @@ testY = lb.transform(testY)
 # construct the image generator for data augmentation
 if args.aug:
 	if args.augtype == 'rotate':
-		aug = ImageDataGenerator(rotation_range = arg.augparameter)
+		aug = ImageDataGenerator(rotation_range = args.augparameter)
 	elif args.augtype == 'w_shift':
-		aug = ImageDataGenerator(width_shift_range = arg.augparameter)
+		aug = ImageDataGenerator(width_shift_range = args.augparameter)
 	elif args.augtype == 'h_shift':
-		aug = ImageDataGenerator(height_shift_range = arg.augparameter)
+		aug = ImageDataGenerator(height_shift_range = args.augparameter)
 	elif args.augtype == 'shear':
-		aug = ImageDataGenerator(shear_range = arg.augparameter)
+		aug = ImageDataGenerator(shear_range = args.augparameter)
 	elif args.augtype == 'zoom':
-		aug = ImageDataGenerator(zoom_range = arg.augparameter)
+		aug = ImageDataGenerator(zoom_range = args.augparameter)
 	elif args.augtype == 'h_flip':
 		aug = ImageDataGenerator(horizontal_flip = True)
 	elif args.augtype == 'v_flip':
 		aug = ImageDataGenerator(vertical_flip = True)
 	elif args.augtype == 'brightness':
-		aug = ImageDataGenerator(brightness_range = arg.augparameter)
+		aug = ImageDataGenerator(brightness_range = args.augparameter)
 	elif args.augtype == 'fill_nearest':
 		aug = ImageDataGenerator(fill_mode = 'nearest')
 	elif args.augtype == 'fill_reflect':
@@ -311,6 +312,26 @@ fabst.close()
 
 ### IMAGES ###
 
+#outputfiles of the augmented pictures
+
+for i in range(0,9):
+	npimage = testX[i]
+	npimage.reshape((args.width,args.height,args.depth))	
+	npimage=np.rint(npimage*256).astype(np.uint8)
+	image=Image.fromarray(npimage)
+	plt.subplot(330 + 1 + i)
+	plt.imshow(image, cmap=plt.get_cmap('gray'))
+	plt.savefig(outDir+'/original.png')
+
+for X_batch, y_batch in aug.flow(testX, testY, batch_size=9):
+	# Show 9 images
+	for i in range(0,9):
+		plt.subplot(330 + 1 + i)
+		plt.imshow(X_batch[i].reshape(128,128, 3))
+
+	plt.savefig(outDir+'/augmented.png')
+	break
+    
 def plot_npimage(npimage, ifig=0, width=64, height=64, depth=3, title='Yet another image', filename=None):
 	plt.figure(ifig)
 	npimage.reshape((args.width,args.height,args.depth))	
