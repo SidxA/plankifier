@@ -170,7 +170,7 @@ if args.aug:
 	elif args.augtype == 'v_flip':
 		aug = ImageDataGenerator(vertical_flip = True)
 	elif args.augtype == 'brightness':
-		aug = ImageDataGenerator(brightness_range = args.augparameter)
+		aug = ImageDataGenerator(brightness_range = (args.augparameter,1-args.augparameter))
 	elif args.augtype == 'fill_nearest':
 		aug = ImageDataGenerator(fill_mode = 'nearest')
 	elif args.augtype == 'fill_reflect':
