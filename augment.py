@@ -44,8 +44,8 @@ parser.add_argument('-load', default=None, help='Path to a previously trained mo
 parser.add_argument('-override_lr', action='store_true', help='If true, when loading a previously trained model it discards its LR in favor of args.lr')
 parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
 #Augmentation arguments
-parser.add_argument('-augtype', default='rotation', help='Augmentation type')
-parser.add_argument('-augparameter', type=float, default=(0,), help='Augmentation parameter')
+parser.add_argument('-augtype', default='none', help='Augmentation type')
+parser.add_argument('-augparameter', type=float, default=(0), help='Augmentation parameter')
 
 args=parser.parse_args()
 
