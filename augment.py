@@ -154,31 +154,33 @@ trainY = lb.fit_transform(trainY)
 testY = lb.transform(testY)
 
 # construct the image generator for data augmentation
-if args.aug:
-	if args.augtype == 'rotate':
-		aug = ImageDataGenerator(rotation_range = args.augparameter)
-	elif args.augtype == 'w_shift':
-		aug = ImageDataGenerator(width_shift_range = args.augparameter)
-	elif args.augtype == 'h_shift':
-		aug = ImageDataGenerator(height_shift_range = args.augparameter)
-	elif args.augtype == 'shear':
-		aug = ImageDataGenerator(shear_range = args.augparameter)
-	elif args.augtype == 'zoom':
-		aug = ImageDataGenerator(zoom_range = args.augparameter)
-	elif args.augtype == 'h_flip':
-		aug = ImageDataGenerator(horizontal_flip = True)
-	elif args.augtype == 'v_flip':
-		aug = ImageDataGenerator(vertical_flip = True)
-	elif args.augtype == 'brightness':
-		aug = ImageDataGenerator(brightness_range = (args.augparameter,1-args.augparameter))
-	elif args.augtype == 'fill_nearest':
-		aug = ImageDataGenerator(fill_mode = 'nearest')
-	elif args.augtype == 'fill_reflect':
-		aug = ImageDataGenerator(fill_mode = 'reflect')
-	elif args.augtype == 'fill_wrap':
-		aug = ImageDataGenerator(fill_mode = 'wrap')
-	elif args.augtype == 'rescale':
-		aug = ImageDataGenerator(rescale = arg.augparameter)
+
+if args.augtype == 'rotate':
+	aug = ImageDataGenerator(rotation_range = args.augparameter)
+elif args.augtype == 'w_shift':
+	aug = ImageDataGenerator(width_shift_range = args.augparameter)
+elif args.augtype == 'h_shift':
+	aug = ImageDataGenerator(height_shift_range = args.augparameter)
+elif args.augtype == 'shear':
+	aug = ImageDataGenerator(shear_range = args.augparameter)
+elif args.augtype == 'zoom':
+	aug = ImageDataGenerator(zoom_range = args.augparameter)
+elif args.augtype == 'h_flip':
+	aug = ImageDataGenerator(horizontal_flip = True)
+elif args.augtype == 'v_flip':
+	aug = ImageDataGenerator(vertical_flip = True)
+elif args.augtype == 'brightness':
+	aug = ImageDataGenerator(brightness_range = (args.augparameter,1-args.augparameter))
+elif args.augtype == 'fill_nearest':
+	aug = ImageDataGenerator(fill_mode = 'nearest')
+elif args.augtype == 'fill_reflect':
+	aug = ImageDataGenerator(fill_mode = 'reflect')
+elif args.augtype == 'fill_wrap':
+	aug = ImageDataGenerator(fill_mode = 'wrap')
+elif args.augtype == 'rescale':
+	aug = ImageDataGenerator(rescale = args.augparameter)
+else:
+	aug = ImageDataGenerator(rescale=0)
 
 
 # initialize our VGG-like Convolutional Neural Network
