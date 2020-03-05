@@ -343,6 +343,22 @@ def plot_npimage(npimage, ifig=0, width=64, height=64, depth=3, title='Yet anoth
 		plt.savefig(filename)
 
 
+
+# Image of the easiest prediction
+plot_npimage(testImage[i_maxconf_right], 0, args.width, args.height, args.depth, 
+	title='Prediction: {}, Truth: {}\nConfidence:{:.2f}'.format(classes['name'][ predictions[i_maxconf_right].argmax() ], 
+																classes['name'][ testY      [i_maxconf_right].argmax() ],
+																confidences[i_maxconf_right]),
+	filename=outDir+'/easiest-prediction.png')
+
+# Image of the worst prediction
+plot_npimage(testImage[i_maxconf_wrong], 1, args.width, args.height, args.depth, 
+	title='Prediction: {}, Truth: {}\nConfidence:{:.2f}'.format(classes['name'][ predictions[i_maxconf_wrong].argmax() ], 
+																classes['name'][ testY      [i_maxconf_wrong].argmax() ],
+																confidences[i_maxconf_wrong]),
+	filename=outDir+'/worst-prediction.png')
+
+
 # Plot loss during training
 plt.figure(2)
 plt.title('Model loss during training')
@@ -353,6 +369,51 @@ plt.xlabel('epoch')
 plt.xlabel('loss')
 plt.legend()
 plt.savefig(outDir+'/loss.png')
+
+# Plot accuracy during training
+plt.figure(3)
+plt.title('Model accuracy during training')
+plt.ylim((0,1))
+plt.plot(np.arange(1,simulated_epochs+1),history.history['accuracy'], label='train')
+plt.plot(np.arange(1,simulated_epochs+1),history.history['val_accuracy'], label='test')
+plt.plot(np.arange(1,simulated_epochs+1),np.ones(simulated_epochs)/classes['num'], label='random', color='black', linestyle='-.')
+plt.xlabel('epoch')
+plt.xlabel('loss')
+plt.grid(axis='y')
+plt.legend()
+plt.savefig(outDir+'/accuracy.png')
+
+# Scatter plot and density of correct and incorrect predictions (useful for active and semi-supervised learning)
+plt.figure(4)
+plt.title('Correct/incorrect predictions and their confidence')
+sns.distplot(confidences_right, bins=20, label='Density of correct predictions', color='green')
+sns.distplot(confidences_wrong, bins=20, label='Density of wrong   predictions', color='red')
+plt.plot(confidences, whether, 'o', label='data (correct:1, wrong:0)', color='black', markersize=1)
+plt.xlabel('confidence')
+plt.xlim((0,1))
+plt.ylim(bottom=-0.2)
+plt.legend()
+plt.savefig(outDir+'/confidence.png')
+
+
+# Plot Abstention
+plt.figure(5)
+plt.subplots_adjust(left=0.125, bottom=0.1, right=0.9, top=0.9, wspace=0.2, hspace=.7)
+ax1=plt.subplot(2, 1, 1)
+ax1.set_ylim((0,1))
+plt.title('Abstention')
+plt.ylabel('Accuracy after abstention')
+plt.xlabel('Threshold')
+plt.plot(thresholds, accs, color='darkred')
+plt.grid(axis='y')
+ax2=plt.subplot(2, 1, 2)
+ax2.set_ylim((0.1,test_size*1.5))
+ax2.set_yscale('log')
+plt.ylabel('Remaining data after abstention')
+plt.xlabel('Threshold')
+plt.plot(thresholds, nconfident, color='darkred')
+plt.grid(axis='y')
+plt.savefig(outDir+'/abstention.png')
 
 
 if args.plot:
