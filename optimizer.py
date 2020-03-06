@@ -197,15 +197,15 @@ else:
 		opt = keras.optimizers.SGD(lr=args.lr, nesterov=False, momentum = 0.1)
 	
 	elif args.opt=='rmsprop':
-		opt = kears.optimizers.RMSprop(lr=args.lr, rho = 0.9)
+		opt = keras.optimizers.RMSprop(lr=args.lr, rho = 0.9)
 	elif args.opt=='adagrad':
-		opt = kears.optimizers.Adagrad(lr=args.lr)
+		opt = keras.optimizers.Adagrad(lr=args.lr)
 	elif args.opt=='adadelta':
-		opt = kears.optimizers.Adadelta(lr=args.lr, rho = 0.95)
+		opt = keras.optimizers.Adadelta(lr=args.lr, rho = 0.95)
 	elif args.opt=='adamax':
-		opt = kears.optimizers.Adamax(lr=args.lr, beta_1 = 0.9, beta_2 = 0.999)
+		opt = keras.optimizers.Adamax(lr=args.lr, beta_1 = 0.9, beta_2 = 0.999)
 	elif args.opt=='nadam':
-		opt = kears.optimizers.Nadam(lr=args.lr, beta_1 = 0.9, beta_2 = 0.999)
+		opt = keras.optimizers.Nadam(lr=args.lr, beta_1 = 0.9, beta_2 = 0.999)
 	else:
 		raise NotImplementedError('Optimizer {} is not implemented'.format(arg.opt))
 	model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
