@@ -347,14 +347,14 @@ def plot_npimage(npimage, ifig=0, width=64, height=64, depth=3, title='Yet anoth
 
 
 # Image of the easiest prediction
-plot_npimage(testImage[i_maxconf_right], 0, args.width, args.height, args.depth, 
+plot_npimage(testX[i_maxconf_right], 0, args.width, args.height, args.depth, 
 	title='Prediction: {}, Truth: {}\nConfidence:{:.2f}'.format(classes['name'][ predictions[i_maxconf_right].argmax() ], 
 																classes['name'][ testY      [i_maxconf_right].argmax() ],
 																confidences[i_maxconf_right]),
 	filename=outDir+'/easiest-prediction.png')
 
 # Image of the worst prediction
-plot_npimage(testImage[i_maxconf_wrong], 1, args.width, args.height, args.depth, 
+plot_npimage(testX[i_maxconf_wrong], 1, args.width, args.height, args.depth, 
 	title='Prediction: {}, Truth: {}\nConfidence:{:.2f}'.format(classes['name'][ predictions[i_maxconf_wrong].argmax() ], 
 																classes['name'][ testY      [i_maxconf_wrong].argmax() ],
 																confidences[i_maxconf_wrong]),
