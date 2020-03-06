@@ -43,6 +43,7 @@ parser.add_argument('-layers',nargs=2, type=int, default=[256,128], help="Layers
 parser.add_argument('-load', default=None, help='Path to a previously trained model that should be loaded.')
 parser.add_argument('-override_lr', action='store_true', help='If true, when loading a previously trained model it discards its LR in favor of args.lr')
 parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
+parser.add_argument('-loss', default='mean_squared_error', help ='loss function')
 #Augmentation arguments
 parser.add_argument('-augtype', default='none', help='Augmentation type')
 parser.add_argument('-augparameter', type=float, default=(0), help='Augmentation parameter')
@@ -73,7 +74,7 @@ np.random.seed(12345)
 # Create a unique output directory
 now = datetime.datetime.now()
 dt_string = now.strftime("%Y-%m-%d_%Hh%Mm%Ss")
-filename = args.model+'_optimization:'+args.opt+'_start:'+dt_string
+filename = args.model+'_batchsize:'+args.bs+'_start:'+dt_string
 outDir = args.outpath+'/'+filename+'/'
 pathlib.Path(outDir).mkdir(parents=True, exist_ok=True)
 fsummary=open(outDir+'args.txt','w')
@@ -183,32 +184,13 @@ else:
 	# compile the model using SGD as our optimizer and categorical
 	# cross-entropy loss (you'll want to use binary_crossentropy
 	# for 2-class classification)
-	if args.opt=='adam_1':
-		opt = keras.optimizers.Adam(learning_rate=args.lr, beta_1=0.9, beta_2=0.999, amsgrad=False)
-	elif args.opt=='adam_2':
-		opt = keras.optimizers.Adam(learning_rate=args.lr, beta_1=0.9, beta_2=0.999, amsgrad=True)	
-	elif args.opt=='sgd_1':
-		opt = keras.optimizers.SGD(lr=args.lr, nesterov=False)
-	elif args.opt=='sgd_2':
+	if args.opt=='adam':
+		opt = keras.optimizers.Adam(learning_rate=args.lr, beta_1=0.9, beta_2=0.999, amsgrad=False)	
+	elif args.opt=='sgd':
 		opt = keras.optimizers.SGD(lr=args.lr, nesterov=True)
-	elif args.opt=='sgd_3':
-		opt = keras.optimizers.SGD(lr=args.lr, nesterov=True, momentum = 0.1)
-	elif args.opt=='sgd_4':
-		opt = keras.optimizers.SGD(lr=args.lr, nesterov=False, momentum = 0.1)
-	
-	elif args.opt=='rmsprop':
-		opt = keras.optimizers.RMSprop(lr=args.lr, rho = 0.9)
-	elif args.opt=='adagrad':
-		opt = keras.optimizers.Adagrad(lr=args.lr)
-	elif args.opt=='adadelta':
-		opt = keras.optimizers.Adadelta(lr=args.lr, rho = 0.95)
-	elif args.opt=='adamax':
-		opt = keras.optimizers.Adamax(lr=args.lr, beta_1 = 0.9, beta_2 = 0.999)
-	elif args.opt=='nadam':
-		opt = keras.optimizers.Nadam(lr=args.lr, beta_1 = 0.9, beta_2 = 0.999)
 	else:
 		raise NotImplementedError('Optimizer {} is not implemented'.format(arg.opt))
-	model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
+	model.compile(loss=args.loss, optimizer=opt, metrics=["accuracy"])
 
 # checkpoints
 checkpointer    = keras.callbacks.ModelCheckpoint(filepath=outDir+'/bestweights.hdf5', monitor='val_loss', verbose=0, save_best_only=True) # save the model at every epoch in which there is an improvement in test accuracy

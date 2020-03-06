@@ -74,7 +74,7 @@ np.random.seed(12345)
 # Create a unique output directory
 now = datetime.datetime.now()
 dt_string = now.strftime("%Y-%m-%d_%Hh%Mm%Ss")
-filename = args.model+'_optimization:'+args.opt+'_'+dt_string
+filename = args.model+'_loss:'+args.loss+'_start:'+dt_string
 outDir = args.outpath+'/'+filename+'/'
 pathlib.Path(outDir).mkdir(parents=True, exist_ok=True)
 fsummary=open(outDir+'args.txt','w')
@@ -311,7 +311,7 @@ for X_batch, y_batch in aug.flow(testX, testY, batch_size=9):
 	# Show 9 images
 	for i in range(0,9):
 		plt.subplot(330 + 1 + i)
-		plt.imshow(X_batch[i].reshape(128,128, 3))
+		plt.imshow(X_batch[i].reshape(args.width,args.height,args.depth))
 
 	plt.savefig(outDir+'/augmented.png')
 	break
