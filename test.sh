@@ -1,9 +1,5 @@
 #!/bin/bash
 
-sleep 14400
-
-wait
-
 python3 batchsize.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=3 -lr=0.0001 -opt=sgd -datapath='./data/' &
 
 python3 batchsize.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=4 -lr=0.0001 -opt=sgd -datapath='./data/' &
@@ -49,29 +45,3 @@ python3 imagesize.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True
 python3 imagesize.py -totEpochs=40 -width=130 -height=130 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt=sgd -datapath='./data/' &
 
 python3 imagesize.py -totEpochs=40 -width=132 -height=132 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt=sgd -datapath='./data/' &
-
-wait
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='sgd_1' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='sgd_2' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='sgd_3' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='sgd_4' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='adam_1' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='adam_2' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='rmsprop' -datapath='./data/' &
-
-wait
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='adagrad' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='adadelta' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='adamax' -datapath='./data/' &
-
-python3 optimizer.py -totEpochs=40 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=8 -lr=0.0001 -opt='nadam' -datapath='./data/' &

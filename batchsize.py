@@ -74,7 +74,7 @@ np.random.seed(12345)
 # Create a unique output directory
 now = datetime.datetime.now()
 dt_string = now.strftime("%Y-%m-%d_%Hh%Mm%Ss")
-filename = args.model+'_batchsize:'+args.bs+'_start:'+dt_string
+filename = args.model+'_batchsize:'+np.str(args.bs)+'_start:'+dt_string
 outDir = args.outpath+'/'+filename+'/'
 pathlib.Path(outDir).mkdir(parents=True, exist_ok=True)
 fsummary=open(outDir+'args.txt','w')
