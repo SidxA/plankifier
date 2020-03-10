@@ -212,7 +212,7 @@ else:
 	model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
 
 # checkpoints
-checkpointer    = keras.callbacks.ModelCheckpoint(filepath=outDir+'/bestweights.hdf5', monitor='val_loss', verbose=0, save_best_only=True) # save the model at every epoch in which there is an improvement in test accuracy
+checkpointer    = keras.callbacks.ModelCheckpoint(filepath=outDir+'/bestweights.hdf5', monitor='val_loss', verbose=2, save_best_only=True) # save the model at every epoch in which there is an improvement in test accuracy
 # coitointerrotto = keras.callbacks.callbacks.EarlyStopping(monitor='val_loss', patience=args.totEpochs, restore_best_weights=True)
 logger          = keras.callbacks.callbacks.CSVLogger(outDir+'epochs.log', separator=' ', append=False)
 callbacks=[checkpointer, logger]
@@ -228,7 +228,8 @@ if args.aug:
 		steps_per_epoch=len(trainX)//args.bs,	
 		epochs=args.totEpochs, 
 		callbacks=callbacks,
-		initial_epoch = args.initial_epoch)
+		initial_epoch = args.initial_epoch,
+		verbose=2)
 else:
 	history = model.fit(
 		trainX, trainY, batch_size=args.bs, 
