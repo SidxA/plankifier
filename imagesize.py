@@ -22,6 +22,14 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
+
+###only cpu
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
+###hope!
+
 parser = argparse.ArgumentParser(description='Train a model on zooplankton images')
 parser.add_argument('-datapath', default='./data/2019.11.20_zooplankton_trainingset_TOM/', help="Print many messages on screen.")
 parser.add_argument('-datakind', default='image', choices=['mixed','image','tsv'], help="If tsv, expect a single tsv file; if images, each class directory has only images inside; if mixed, expect a more complicated structure defined by the output of SPCConvert")
@@ -193,7 +201,7 @@ else:
 	model.compile(loss=args.loss, optimizer=opt, metrics=["accuracy"])
 
 # checkpoints
-checkpointer    = keras.callbacks.ModelCheckpoint(filepath=outDir+'/bestweights.hdf5', monitor='val_loss', verbose=0, save_best_only=True) # save the model at every epoch in which there is an improvement in test accuracy
+checkpointer    = keras.callbacks.ModelCheckpoint(filepath=outDir+'/bestweights.hdf5', monitor='val_loss', verbose=2, save_best_only=True) # save the model at every epoch in which there is an improvement in test accuracy
 # coitointerrotto = keras.callbacks.callbacks.EarlyStopping(monitor='val_loss', patience=args.totEpochs, restore_best_weights=True)
 logger          = keras.callbacks.callbacks.CSVLogger(outDir+'epochs.log', separator=' ', append=False)
 callbacks=[checkpointer, logger]
@@ -210,7 +218,7 @@ if args.aug:
 		epochs=args.totEpochs, 
 		callbacks=callbacks,
 		initial_epoch = args.initial_epoch,
-		verbose = 0)
+		verbose = 2)
 else:
 	history = model.fit(
 		trainX, trainY, batch_size=args.bs, 
