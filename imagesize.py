@@ -51,7 +51,6 @@ parser.add_argument('-layers',nargs=2, type=int, default=[256,128], help="Layers
 parser.add_argument('-load', default=None, help='Path to a previously trained model that should be loaded.')
 parser.add_argument('-override_lr', action='store_true', help='If true, when loading a previously trained model it discards its LR in favor of args.lr')
 parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
-parser.add_argument('-loss', default='mean_squared_error', help ='loss function')
 #Augmentation arguments
 parser.add_argument('-augtype', default='none', help='Augmentation type')
 parser.add_argument('-augparameter', type=float, default=(0), help='Augmentation parameter')
@@ -198,7 +197,7 @@ else:
 		opt = keras.optimizers.SGD(lr=args.lr, nesterov=True)
 	else:
 		raise NotImplementedError('Optimizer {} is not implemented'.format(arg.opt))
-	model.compile(loss=args.loss, optimizer=opt, metrics=["accuracy"])
+	model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
 
 # checkpoints
 checkpointer    = keras.callbacks.ModelCheckpoint(filepath=outDir+'/bestweights.hdf5', monitor='val_loss', verbose=2, save_best_only=True) # save the model at every epoch in which there is an improvement in test accuracy
@@ -232,6 +231,7 @@ print('Training took',trainingTime/60,'minutes')
 
 ### evaluate the network
 print("[INFO] evaluating network...")
+print('\nRunning',sys.argv[0],sys.argv[1:])
 if args.aug:
 	predictions = model.predict(testX)
 else:
