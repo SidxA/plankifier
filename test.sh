@@ -3,8 +3,6 @@
 
 #wait till a possible prior run is finished (in seconds)
 
-sleep 40000
-
 wait 
 
 python3 batchsize.py -totEpochs=2 -width=128 -height=128 -model=conv2 -aug=True -resize=keep_proportions -bs=2 -lr=0.0001 -opt=adam -datapath='./data/' &
