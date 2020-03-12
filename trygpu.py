@@ -24,8 +24,12 @@ from sklearn.metrics import classification_report
 import tensorflow as tf
 
 ###try gpu
-config = tf.ConfigProto()
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+
+config = ConfigProto()
 config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)
 
 
 parser = argparse.ArgumentParser(description='Train a model on zooplankton images')
