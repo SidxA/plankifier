@@ -19,7 +19,7 @@ from sklearn.metrics import classification_report
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
-'''
+
 parser = argparse.ArgumentParser(description='Train a model on zooplankton images')
 parser.add_argument('-datapath', default='./data/2019.11.20_zooplankton_trainingset_TOM/', help="Print many messages on screen.")
 parser.add_argument('-datakind', default='image', choices=['mixed','image','tsv'], help="If tsv, expect a single tsv file; if images, each class directory has only images inside; if mixed, expect a more complicated structure defined by the output of SPCConvert")
@@ -48,7 +48,7 @@ parser.add_argument('-augparameter', type=float, default=(0), help='Augmentation
 args=parser.parse_args()
 
 print('\nRunning',sys.argv[0],sys.argv[1:])
-
+'''
 # Create a unique output directory
 now = datetime.datetime.now()
 dt_string = now.strftime("%Y-%m-%d_%Hh%Mm%Ss")
@@ -67,7 +67,7 @@ imagesize = 128
 datapath = './data/'
 learning_rate = 0.0001
 batchsize=8
-epochs=1
+epochs=args.totEpochs
 key = 'daphnia'
 limit = 200
 depth = 3
@@ -189,16 +189,6 @@ opt = k.optimizers.SGD(lr=lr, nesterov=True)
 model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
 '''
 
-history = model.fit(
-    trainX,trainY, batch_size=3, 
-    validation_data=(testX, testY), 
-    epochs=500,verbose=1)
-
-'''
-    
-	
-
-
 #DATA augmentation
 
 aug = ImageDataGenerator(
@@ -207,6 +197,26 @@ aug = ImageDataGenerator(
 	zoom_range=0.2, 		horizontal_flip=True,
 	vertical_flip=True,		
 	)
+
+if args.aug:
+	history = model.fit_generator(
+		aug.flow(trainX, trainY, batch_size=args.bs), 
+		validation_data=(testX, testY), 
+		epochs=args.totEpochs, 
+		verbose = 1)
+else:
+	history = model.fit(
+		trainX, trainY, batch_size=args.bs, 
+		validation_data=(testX, testY), 
+		epochs=args.totEpochs, 
+		verbose=1)
+
+'''
+    
+	
+
+
+
 
 
 
@@ -220,22 +230,7 @@ callbacks=[checkpointer, logger]
 
 # train the neural network
 start=time.time()
-if args.aug:
-	history = model.fit_generator(
-		aug.flow(trainX, trainY, batch_size=args.bs), 
-		validation_data=(testX, testY), 
-		steps_per_epoch=len(trainX)//args.bs,	
-		epochs=args.totEpochs, 
-		callbacks=callbacks,
-		initial_epoch = args.initial_epoch,
-		verbose = 0)
-else:
-	history = model.fit(
-		trainX, trainY, batch_size=args.bs, 
-		validation_data=(testX, testY), 
-		epochs=args.totEpochs, 
-		callbacks=callbacks,
-		initial_epoch = args.initial_epoch)
+
 trainingTime=time.time()-start
 print('Training took',trainingTime/60,'minutes')
 
