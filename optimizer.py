@@ -244,6 +244,14 @@ else:
 trainingTime=time.time()-start
 print('Training took',trainingTime/60,'minutes')
 
+model.save_weights(outDir+"model.h5")
+
+output = pd.DataFrame(history.history)
+hist_csv_file = outDir+'epochs.log'
+with open(hist_csv_file, mode='w') as f:
+    output.to_csv(f)
+    
+
 
 ### evaluate the network
 print("[INFO] evaluating network...")
