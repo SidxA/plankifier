@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 import os, sys, pathlib, glob, time, datetime, argparse
 import numpy as np
 import pandas as pd
@@ -167,11 +159,11 @@ else:
 (trainX, testX, trainY, testY) = train_test_split(data,	labels, test_size=0.2, random_state=42)
 
 model = Sequential()
-model.add(k.layers.Conv2D(32, (3, 3), input_shape=input_shape))
+model.add(k.layers.Conv2D(256, (3, 3), input_shape=input_shape))
 model.add(Activation('relu'))
 model.add(k.layers.MaxPooling2D(pool_size=(2, 2)))
 
-model.add(k.layers.Conv2D(32, (3, 3)))
+model.add(k.layers.Conv2D(128, (3, 3)))
 model.add(Activation('relu'))
 model.add(k.layers.MaxPooling2D(pool_size=(2, 2)))
 
