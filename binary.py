@@ -24,26 +24,26 @@ config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
 
 parser = argparse.ArgumentParser(description='Train a model on zooplankton images')
-parser.add_argument('-datapath', default='./data/2019.11.20_zooplankton_trainingset_TOM/', help="Print many messages on screen.")
-parser.add_argument('-datakind', default='image', choices=['mixed','image','tsv'], help="If tsv, expect a single tsv file; if images, each class directory has only images inside; if mixed, expect a more complicated structure defined by the output of SPCConvert")
-parser.add_argument('-outpath', default='./out/', help="Print many messages on screen.")
-parser.add_argument('-verbose', action='store_true', help="Print many messages on screen.")
-parser.add_argument('-plot', action='store_true', help="Plot loss and accuracy during training once the run is over.")
+#parser.add_argument('-datapath', default='./data/2019.11.20_zooplankton_trainingset_TOM/', help="Print many messages on screen.")
+#parser.add_argument('-datakind', default='image', choices=['mixed','image','tsv'], help="If tsv, expect a single tsv file; if images, each class directory has only images inside; if mixed, expect a more complicated structure defined by the output of SPCConvert")
+#parser.add_argument('-outpath', default='./out/', help="Print many messages on screen.")
+#parser.add_argument('-verbose', action='store_true', help="Print many messages on screen.")
+#parser.add_argument('-plot', action='store_true', help="Plot loss and accuracy during training once the run is over.")
 parser.add_argument('-totEpochs', type=int, default=5, help="Total number of epochs for the training")
 parser.add_argument('-opt', default='sgd', help="Choice of the minimization algorithm (sgd,adam)")
-parser.add_argument('-bs', type=int, default=32, help="Batch size")
-parser.add_argument('-lr', type=float, default=0.00005, help="Learning Rate")
-parser.add_argument('-height', type=int, default=128, help="Image height")
-parser.add_argument('-width', type=int, default=128, help="Image width")
-parser.add_argument('-depth', type=int, default=3, help="Number of channels")
-parser.add_argument('-testSplit', type=float, default=0.2, help="Fraction of examples in the validation set")
+#parser.add_argument('-bs', type=int, default=32, help="Batch size")
+#parser.add_argument('-lr', type=float, default=0.00005, help="Learning Rate")
+#parser.add_argument('-height', type=int, default=128, help="Image height")
+#parser.add_argument('-width', type=int, default=128, help="Image width")
+#parser.add_argument('-depth', type=int, default=3, help="Number of channels")
+#parser.add_argument('-testSplit', type=float, default=0.2, help="Fraction of examples in the validation set")
 parser.add_argument('-aug', default = True, help="Perform data augmentation.")
-parser.add_argument('-resize', choices=['keep_proportions','acazzo'], default='keep_proportions', help='The way images are resized')
-parser.add_argument('-model', choices=['mlp','conv2','smallvgg'], default='conv2', help='The model. MLP gives decent results, conv2 is the best, smallvgg overfits (*validation* accuracy oscillates).')
-parser.add_argument('-layers',nargs=2, type=int, default=[256,128], help="Layers for MLP")
-parser.add_argument('-load', default=None, help='Path to a previously trained model that should be loaded.')
-parser.add_argument('-override_lr', action='store_true', help='If true, when loading a previously trained model it discards its LR in favor of args.lr')
-parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
+#parser.add_argument('-resize', choices=['keep_proportions','acazzo'], default='keep_proportions', help='The way images are resized')
+#parser.add_argument('-model', choices=['mlp','conv2','smallvgg'], default='conv2', help='The model. MLP gives decent results, conv2 is the best, smallvgg overfits (*validation* accuracy oscillates).')
+#parser.add_argument('-layers',nargs=2, type=int, default=[256,128], help="Layers for MLP")
+#parser.add_argument('-load', default=None, help='Path to a previously trained model that should be loaded.')
+#parser.add_argument('-override_lr', action='store_true', help='If true, when loading a previously trained model it discards its LR in favor of args.lr')
+#parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
 parser.add_argument('-limit', type = int, default=0, help='number of images')
 
 args=parser.parse_args()
@@ -69,7 +69,7 @@ datapath = './data/'
 learning_rate = 0.0001
 batchsize=8
 epochs=args.totEpochs
-key = 'daphnia'
+key = 'dinobryon'
 limit = args.limit
 depth = 3
 lr=.0001
