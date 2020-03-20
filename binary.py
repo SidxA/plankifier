@@ -1,13 +1,6 @@
-#!/usr/bin/env python3
-# 
-# Optimizer: SGD
-# 
-# Launch as:
-# 	python binary.py -totEpochs=10 -width=128 -height=128 -model=conv2 -aug -resize=keep_proportions -bs=8 -lr=0.0001 -opt=sgd -datapath='./data/'
-# 
-#########################################################################
-
-import os, sys, pathlib, glob, time, datetime, argparse, numpy as np, pandas as pd
+import os, sys, pathlib, glob, time, datetime, argparse
+import numpy as np
+import pandas as pd
 #import keras
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten
