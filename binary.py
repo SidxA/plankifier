@@ -32,7 +32,7 @@ parser = argparse.ArgumentParser(description='Train a model on zooplankton image
 parser.add_argument('-totEpochs', type=int, default=5, help="Total number of epochs for the training")
 parser.add_argument('-opt', default='sgd', help="Choice of the minimization algorithm (sgd,adam)")
 parser.add_argument('-bs', type=int, default=32, help="Batch size")
-#parser.add_argument('-lr', type=float, default=0.00005, help="Learning Rate")
+parser.add_argument('-lr', type=float, default=0.0001, help="Learning Rate")
 #parser.add_argument('-height', type=int, default=128, help="Image height")
 #parser.add_argument('-width', type=int, default=128, help="Image width")
 #parser.add_argument('-depth', type=int, default=3, help="Number of channels")
@@ -179,9 +179,6 @@ model.add(k.layers.Dropout(0.5))
 model.add(k.layers.Dense(1))
 model.add(Activation('sigmoid'))
 
-model.compile(loss='binary_crossentropy',
-              optimizer='rmsprop',
-              metrics=['accuracy'])
               
 '''              
 model = helper_models.Conv2Layer.build(width=imagesize, height=imagesize, depth=depth, classes = 2)
@@ -199,6 +196,19 @@ aug = ImageDataGenerator(
 	vertical_flip=True,		
 	)
 
+
+if args.opt=='adam':
+	opt = keras.optimizers.Adam(learning_rate=args.lr, beta_1=0.9, beta_2=0.999, amsgrad=True)
+elif args.opt=='sgd':
+	opt = keras.optimizers.SGD(lr=args.lr, nesterov=True)
+elif args.opt=='rmsprop':
+	opt = keras.optimizers.RMSprop(lr=args.lr, rho = 0.9)
+		
+		
+		
+model.compile(loss='binary_crossentropy',
+              optimizer=opt,
+              metrics=['accuracy'])
 if args.aug:
 	history = model.fit_generator(
 		aug.flow(trainX, trainY, batch_size=args.bs), 
