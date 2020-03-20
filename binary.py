@@ -15,10 +15,13 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
-###only cpu
+###try gpu
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
 
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
+config = ConfigProto()
+config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)
 
 parser = argparse.ArgumentParser(description='Train a model on zooplankton images')
 parser.add_argument('-datapath', default='./data/2019.11.20_zooplankton_trainingset_TOM/', help="Print many messages on screen.")
@@ -42,9 +45,6 @@ parser.add_argument('-load', default=None, help='Path to a previously trained mo
 parser.add_argument('-override_lr', action='store_true', help='If true, when loading a previously trained model it discards its LR in favor of args.lr')
 parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
 parser.add_argument('-limit', type = int, default=0, help='number of images')
-#Augmentation arguments
-parser.add_argument('-augtype', default='none', help='Augmentation type')
-parser.add_argument('-augparameter', type=float, default=(0), help='Augmentation parameter')
 
 args=parser.parse_args()
 
