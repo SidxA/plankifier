@@ -26,7 +26,7 @@ session = InteractiveSession(config=config)
 parser = argparse.ArgumentParser(description='Train a model on zooplankton images')
 #parser.add_argument('-datapath', default='./data/2019.11.20_zooplankton_trainingset_TOM/', help="Print many messages on screen.")
 #parser.add_argument('-datakind', default='image', choices=['mixed','image','tsv'], help="If tsv, expect a single tsv file; if images, each class directory has only images inside; if mixed, expect a more complicated structure defined by the output of SPCConvert")
-#parser.add_argument('-outpath', default='./out/', help="Print many messages on screen.")
+parser.add_argument('-outpath', default='./out/', help="Print many messages on screen.")
 #parser.add_argument('-verbose', action='store_true', help="Print many messages on screen.")
 #parser.add_argument('-plot', action='store_true', help="Plot loss and accuracy during training once the run is over.")
 parser.add_argument('-totEpochs', type=int, default=5, help="Total number of epochs for the training")
@@ -52,16 +52,16 @@ parser.add_argument('-number3',type = int, default = 64, help='nodenumbers of th
 args=parser.parse_args()
 
 print('\nRunning',sys.argv[0],sys.argv[1:])
-'''
+
 # Create a unique output directory
 now = datetime.datetime.now()
 dt_string = now.strftime("%Y-%m-%d_%Hh%Mm%Ss")
-filename = 'binary'+'_start:'+dt_string
+filename = 'binary_'+'limit:'+np.str(args.limit)+'_'+dt_string
 outDir = args.outpath+'/'+filename+'/'
 pathlib.Path(outDir).mkdir(parents=True, exist_ok=True)
 fsummary=open(outDir+'args.txt','w')
 print(args, file=fsummary); fsummary.flush()
-'''
+
 
 ########
 # DATA #
@@ -226,29 +226,19 @@ else:
 		epochs=args.totEpochs, 
 		verbose=1)
 
+model.save_weights(outDir+"model.h5")
+
+output = pd.DataFrame(history.history)
+hist_csv_file = outDir+'epochs.log'
+with open(hist_csv_file, mode='w') as f:
+    output.to_csv(f)
+
 '''
-    
-	
-
-
-
-
-
-
 # checkpoints
 checkpointer    = keras.callbacks.ModelCheckpoint(filepath=outDir+'/bestweights.hdf5', monitor='val_loss', verbose=0, save_best_only=True) # save the model at every epoch in which there is an improvement in test accuracy
 # coitointerrotto = keras.callbacks.callbacks.EarlyStopping(monitor='val_loss', patience=args.totEpochs, restore_best_weights=True)
 logger          = keras.callbacks.callbacks.CSVLogger(outDir+'epochs.log', separator=' ', append=False)
 callbacks=[checkpointer, logger]
-
-### TRAIN ###
-
-# train the neural network
-start=time.time()
-
-trainingTime=time.time()-start
-print('Training took',trainingTime/60,'minutes')
-
 
 ### evaluate the network
 print("[INFO] evaluating network...")
@@ -256,7 +246,7 @@ if args.aug:
 	predictions = model.predict(testX)
 else:
 	predictions = model.predict(testX, batch_size=args.bs)
-clrep=classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=classes['name'])
+clrep=classification_report(testY.argmax(axis=0), predictions.argmax(axis=1))
 print(clrep)
 
 
