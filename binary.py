@@ -31,7 +31,7 @@ parser = argparse.ArgumentParser(description='Train a model on zooplankton image
 #parser.add_argument('-plot', action='store_true', help="Plot loss and accuracy during training once the run is over.")
 parser.add_argument('-totEpochs', type=int, default=5, help="Total number of epochs for the training")
 parser.add_argument('-opt', default='sgd', help="Choice of the minimization algorithm (sgd,adam)")
-#parser.add_argument('-bs', type=int, default=32, help="Batch size")
+parser.add_argument('-bs', type=int, default=32, help="Batch size")
 #parser.add_argument('-lr', type=float, default=0.00005, help="Learning Rate")
 #parser.add_argument('-height', type=int, default=128, help="Image height")
 #parser.add_argument('-width', type=int, default=128, help="Image width")
