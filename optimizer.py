@@ -212,7 +212,7 @@ else:
 	elif args.opt=='nadam':
 		opt = keras.optimizers.Nadam(lr=args.lr, beta_1 = 0.9, beta_2 = 0.999)
 	else:
-		raise NotImplementedError('Optimizer {} is not implemented'.format(arg.opt))
+		raise NotImplementedError('Optimizer {} is not implemented'.format(args.opt))
 	model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"])
 
 # checkpoints
