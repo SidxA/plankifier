@@ -45,6 +45,7 @@ parser.add_argument('-aug', default = True, help="Perform data augmentation.")
 #parser.add_argument('-override_lr', action='store_true', help='If true, when loading a previously trained model it discards its LR in favor of args.lr')
 #parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
 parser.add_argument('-limit', type = int, default=0, help='number of images')
+parser.add_argument('-networksize',type = tuple, default = (128,128,128), help='nodenumbers of the three cnn layers')
 
 args=parser.parse_args()
 
@@ -159,16 +160,17 @@ else:
 
 (trainX, testX, trainY, testY) = train_test_split(data,	labels, test_size=0.2, random_state=42)
 
+number1,number2,number3 = *args.networksize
 model = Sequential()
-model.add(k.layers.Conv2D(256, (3, 3), input_shape=input_shape))
+model.add(k.layers.Conv2D(number1, (3, 3), input_shape=input_shape))
 model.add(Activation('relu'))
 model.add(k.layers.MaxPooling2D(pool_size=(2, 2)))
 
-model.add(k.layers.Conv2D(128, (3, 3)))
+model.add(k.layers.Conv2D(number2, (3, 3)))
 model.add(Activation('relu'))
 model.add(k.layers.MaxPooling2D(pool_size=(2, 2)))
 
-model.add(k.layers.Conv2D(64, (3, 3)))
+model.add(k.layers.Conv2D(number3, (3, 3)))
 model.add(Activation('relu'))
 model.add(k.layers.MaxPooling2D(pool_size=(2, 2)))
 
