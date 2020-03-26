@@ -48,6 +48,19 @@ parser.add_argument('-cpu', default=False, help='performs training only on cpus'
 parser.add_argument('-gpu', default=False, help='performs training only on gpus')
 args=parser.parse_args()
 
+if args.gpu:
+	from tensorflow.compat.v1 import ConfigProto
+	from tensorflow.compat.v1 import InteractiveSession
+
+	config = ConfigProto()
+	config.gpu_options.allow_growth = True
+	session = InteractiveSession(config=config)
+	
+if args.cpu:
+	os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+	os.environ["CUDA_VISIBLE_DEVICES"] = ""
+	
+	
 
 imagesize = args.height
 datapath = args.datapath
@@ -196,12 +209,12 @@ if args.aug:
 else:
 '''
 history = model.fit(
-	[x1,x2], y, #batch_size=args.bs, 
+	[x1,x2], y, batch_size=args.bs, 
 	#validation_data=(testX, testY), 
 	epochs=epochs, 
 	callbacks=callbacks,
 	initial_epoch = 0,
 	verbose=args.verbose,
-	validation_split=0.2)
+	validation_split=args.testSplit)
 #trainingTime=time.time()-start
 #print('Training took',trainingTime/60,'minutes')
