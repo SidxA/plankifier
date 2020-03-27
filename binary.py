@@ -24,7 +24,7 @@ config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
 
 parser = argparse.ArgumentParser(description='Train a model on zooplankton images')
-#parser.add_argument('-datapath', default='./data/2019.11.20_zooplankton_trainingset_TOM/', help="Print many messages on screen.")
+parser.add_argument('-datapath', default='./data/', help="Print many messages on screen.")
 #parser.add_argument('-datakind', default='image', choices=['mixed','image','tsv'], help="If tsv, expect a single tsv file; if images, each class directory has only images inside; if mixed, expect a more complicated structure defined by the output of SPCConvert")
 parser.add_argument('-outpath', default='./out/', help="Print many messages on screen.")
 #parser.add_argument('-verbose', action='store_true', help="Print many messages on screen.")
@@ -45,11 +45,25 @@ parser.add_argument('-aug', default = True, help="Perform data augmentation.")
 #parser.add_argument('-override_lr', action='store_true', help='If true, when loading a previously trained model it discards its LR in favor of args.lr')
 #parser.add_argument('-initial_epoch', type=int, default=0, help='Initial epoch of the training')
 parser.add_argument('-limit', type = int, default=0, help='number of images')
+parser.add_argument('-key', type = str, default='dinobryon', help='To be identified class.')
 parser.add_argument('-number1',type = int, default = 256, help='nodenumbers of the first cnn layers')
 parser.add_argument('-number2',type = int, default = 128, help='nodenumbers of the second cnn layers')
 parser.add_argument('-number3',type = int, default = 64, help='nodenumbers of the third cnn layers')
-
+parser.add_argument('-cpu', default=False, help='performs training only on cpus')
+parser.add_argument('-gpu', default=False, help='performs training only on gpus')
 args=parser.parse_args()
+
+if args.gpu:
+	from tensorflow.compat.v1 import ConfigProto
+	from tensorflow.compat.v1 import InteractiveSession
+
+	config = ConfigProto()
+	config.gpu_options.allow_growth = True
+	session = InteractiveSession(config=config)
+	
+if args.cpu:
+	os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+	os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 print('\nRunning',sys.argv[0],sys.argv[1:])
 
@@ -68,11 +82,11 @@ print(args, file=fsummary); fsummary.flush()
 ########
 
 imagesize = 128
-datapath = './data/'
+datapath = args.datapath
 learning_rate = 0.0001
 batchsize=8
 epochs=args.totEpochs
-key = 'dinobryon'
+key = args.key
 limit = args.limit
 depth = 3
 lr=.0001

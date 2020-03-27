@@ -97,3 +97,40 @@ the most important parsed parameter is datapath, all other default values should
 	testSplit		float		0.2				Fraction of examples in the validation set
 
 so far, SGD is implemented and no data augmentation is performed
+
+----------------------------------------------------------------
+
+1: binary
+
+this script takes the key argument which is the class that is going to be identified. It then takes a balanced mix from all other classes given by datapath.
+
+for the cnn the optimizing methods 'adam' , 'sgs' and 'rmsprop' are implemented. For Binary classification, RMSprop seems to yield best results. Binary Crossentropy is the loss function.
+
+
+	argument		type		default			description
+	
+	cpu				bool		False			performs training only on cpus
+	gpu				bool		False			performs training on gpus
+	datapath		str			'./data/'		directory which must contain classes as subdirectories with a directory 'training_images' inside
+	outpath			str			'./out/'		(created) directory for the training output, a subdirectory will be created with the parameters of the run inside the name
+	opt				str			'sgd'			Choice of the minimization algorithm	
+	totEpochs		int			10				total number of epochs for the training
+	bs				int			8				Batch size
+	lr				float		0.0001			Learning Rate
+	height			int			128				Image height, must be the same as width
+	width			int			128				Image width, must be the same as height
+	depth			int			3				Number of channels (3 for RGB)
+	testSplit		float		0.2				Fraction of examples in the validation set
+	key				str			'dinobryon'		to be identified class. Must be the name of a subdirectory of datapath
+	limit			int			0				if 0: takes all images, if !=0: takes only a number of images. Result will be 50/50 class/nonclass images
+	number1			int			256				nodenumbers of the first cnn layer
+	number2			int			128				nodenumbers of the second cnn layer
+	number3			int			64				nodenumbers of the third cnn layer
+
+----------------------------------------------------------------
+
+1: analyze
+
+this script takes the training output (the epoch log files) and visualizes them
+
+the argument path is there for a folder with the title of the hyperparameter beeing changed and should have subdirectories of the individual runs with the parameter value in the names
