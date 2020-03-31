@@ -70,7 +70,7 @@ print('\nRunning',sys.argv[0],sys.argv[1:])
 # Create a unique output directory
 now = datetime.datetime.now()
 dt_string = now.strftime("%Y-%m-%d_%Hh%Mm%Ss")
-filename = 'binary_'+'limit:on_'+np.str(args.limit)+'_'+dt_string
+filename = 'binary_'+np.str(key)+'_limit:on_'+np.str(args.limit)+'_'+dt_string
 outDir = args.outpath+'/'+filename+'/'
 pathlib.Path(outDir).mkdir(parents=True, exist_ok=True)
 fsummary=open(outDir+'args.txt','w')
