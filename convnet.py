@@ -91,17 +91,17 @@ if args.opt != 'sgd_1':
 if args.totEpochs != 10:
 	namestring += np.str(args.totEpochs) + 'epoch(s)_'
 if args.bs != 8:
-	namestring += 'bs:' + np.str(args.bs) + '_'
+	namestring += 'bs_on_' + np.str(args.bs).zfill(5) + '_'
 if args.lr != 0.0001:
 	namestring += 'lr:' + np.str(args.lr) +'_'
 if args.testSplit != 0.2:
 	namestring += 'split:' + np.str(args.testSplit) + '_'
 if args.height != 128:
-	namestring += 'imagesize_on_' + np.str(args.width)+'_'
+	namestring += 'imagesize_on_' + np.str(args.width).zfill(5)+'_'
 if args.aug == False:
 	namestring += 'noaug_'
 if args.augtype != 'standard':
-	namestring += 'aug:' + np.str(args.augtype) + '_on_' + np.str(args.augparameter) + '_'
+	namestring += 'aug:' + np.str(args.augtype) + '_on_' + np.str(args.augparameter).zfill(5) + '_'
 
 now = datetime.datetime.now()
 dt_string = now.strftime("%Y-%m-%d_%Hh%Mm%Ss")

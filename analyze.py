@@ -5,9 +5,6 @@ import seaborn as sns
 
 #Script that runs on the arguments -path and -epochnumber 
 
-#aswell as op
-
-
 #to save a picture contaning the logarithmic evolution of loss, accuracy, val_loss and val_accuracy
 #aswell as the minimal val_loss as a function of the changed parameter
 
